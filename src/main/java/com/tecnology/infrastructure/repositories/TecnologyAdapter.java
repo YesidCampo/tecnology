@@ -1,5 +1,7 @@
 package com.tecnology.infrastructure.repositories;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +36,16 @@ public class TecnologyAdapter implements TecnologyRepositoryPort {
     @Override
     public Flux<Tecnology> findAll(Pageable pageable, boolean ascending) {
         return this.tecnologyRepository.findAll().map(TecnologyMapper::toDomainModel);
+    }
+
+    @Override
+    public Mono<Tecnology> findById(Long id) {
+        return this.tecnologyRepository.findById(id).map(TecnologyMapper::toDomainModel);
+    }
+
+    @Override
+    public Flux<Tecnology> findAllByIds(List<Long> ids) {
+        return this.tecnologyRepository.findAllById(ids).map(TecnologyMapper::toDomainModel);
     }
 
 }
