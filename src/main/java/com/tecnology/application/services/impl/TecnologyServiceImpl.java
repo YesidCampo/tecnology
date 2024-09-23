@@ -1,6 +1,7 @@
 package com.tecnology.application.services.impl;
 
 import java.util.Comparator;
+import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
@@ -57,6 +58,16 @@ public class TecnologyServiceImpl implements TecnologyService {
                         : Comparator.comparing(Tecnology::getName).reversed())
                 .skip(pageable.getPageNumber() * pageable.getPageSize())
                 .take(pageable.getPageSize());
+    }
+
+    @Override
+    public Mono<Tecnology> getTecnologyById(Long id) {
+        return this.retrieveTecnologyUseCase.getTecnologyById(id);
+    }
+
+    @Override
+    public Flux<Tecnology> getTecnologiesByIds(List<Long> ids) {
+        return this.retrieveTecnologyUseCase.getTecnologiesByIds(ids);
     }
 
 }
