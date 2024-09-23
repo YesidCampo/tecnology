@@ -15,9 +15,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -46,13 +49,33 @@ public class TecnologyController {
     @Operation(summary = "Get All Technologies", description = "Return all Technologies of system.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Technologies data found."),
-            @ApiResponse(responseCode = "400", description = "Bad request: Not found Technologies",content = @Content(mediaType = "text/plain", schema = @Schema(type = "string"))),
+            @ApiResponse(responseCode = "400", description = "Bad request: Not found Technologies", content = @Content(mediaType = "text/plain", schema = @Schema(type = "string"))),
     })
     public Flux<Tecnology> getAllTecnology(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "true") boolean ascending) {
         Pageable pageable = PageRequest.of(page, size);
         return this.tecnologyService.getAllTecnology(pageable, ascending);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Technology", description = "Return Technology by Id of system.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Technology data found."),
+            @ApiResponse(responseCode = "400", description = "Bad request: Not found Technology", content = @Content(mediaType = "text/plain", schema = @Schema(type = "string"))),
+    })
+    public Mono<Tecnology> getTecnologyById(@PathVariable Long id) {
+        return this.tecnologyService.getTecnologyById(id);
+    }
+
+    @PostMapping("/technologies/ids")
+    @Operation(summary = "Get All Technologies By Ids", description = "Return all Technologies of system.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Technologies data found."),
+            @ApiResponse(responseCode = "400", description = "Bad request: Not found Technologies", content = @Content(mediaType = "text/plain", schema = @Schema(type = "string"))),
+    })
+    public Flux<Tecnology> getAllTecnologyByIds(@RequestBody List<Long> ids) {
+        return this.tecnologyService.getTecnologiesByIds(ids);
     }
 
 }
